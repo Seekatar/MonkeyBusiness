@@ -14,6 +14,8 @@ This was originally written for the since the M0 won't connect to a corporate Wi
 ## The Program
 The sketch polls the [ServerStatus API](https://github.com/seekatar/ServerStatus) to retrieve the most recent build status.  If a build goes red, the monkey claps.
 
+Since the monkey squeaks, then claps, I tried to get it to do either one by running the motor forwards and backwards, but since it's just a DC motor, it would get out of sync quickly.
+
 To compile the sketch, create a `my_keys.h` file, with your debug and production WiFi setup.  This is in the .gitignore to avoid committing passkeys.  The code will try to connect to prod first, then debug.  Here's an example:
 
 ```c
