@@ -21,6 +21,13 @@ MonkeyProcessor _processor = MonkeyProcessor(logMsg);
 #define PowerPin 12
 
 void setup() {
+  Serial.begin(115200);
+  while ( !Serial )
+  {
+    delay(100);    
+  }
+  Serial.println("Serial ok");
+  
   pinMode(CrossPower2Pin,OUTPUT);
   pinMode(CrossPower1Pin,OUTPUT);
   pinMode(PowerPin,OUTPUT);
@@ -30,8 +37,8 @@ void setup() {
 
   _processor.initialize();
 
-  Serial.begin(115200);
-  Serial.println("Started up ok");
+  Serial.println("Processor initialized");
+
 }
 
 void forward( int ms )

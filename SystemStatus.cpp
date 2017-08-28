@@ -246,17 +246,17 @@ void SystemStatus::checkStatus()
     return;
 
   // from https://bblanchon.github.io/ArduinoJson/assistant/
-  const size_t bufferSize = JSON_ARRAY_SIZE(STATUS_COUNT) + JSON_ARRAY_SIZE(STATUS_COUNT) + STATUS_COUNT*JSON_OBJECT_SIZE(2) + 388;  // 388 was addl bytes for ESP8266
+  const size_t bufferSize = JSON_ARRAY_SIZE(STATUS_COUNT) + STATUS_COUNT*JSON_OBJECT_SIZE(2) + 1100;  // addl bytes for ESP8266
   DynamicJsonBuffer jsonBuffer(bufferSize);
 
-  output = strchr( output, '{' );
+  output = strchr( output, '[' );
   if ( output != NULL )
   {
-    JsonObject& root = jsonBuffer.parseObject(output);
+    JsonArray& root = jsonBuffer.parseArray(output);
     if ( root.success() )
     {
-      logMsg("Got Result, Ctm len %d Zabbix len %d", root["item1"].size(), root["item2"].size());
-      JsonArray &item1 = root["item1"];
+      logMsg("Got Result, Ctm len %d", root.size());
+      JsonArray &item1 = root;
       for ( int i = 0; i < item1.size() && i < STATUS_COUNT; i++ )
       {
         int severity = item1[i]["item1"];
@@ -270,17 +270,7 @@ void SystemStatus::checkStatus()
         BuildInfo[i].Status = SystemStatus::BuildStatus::BuildUnknown;
         BuildInfo[i].Id[0] = '\0';
       }
-      JsonArray &item2 = root["item2"];
-      for ( int i = 0; i < item2.size() && i < STATUS_COUNT; i++ )
-      {
-        int priority = item2[i]["priority"];
-        // logMsg( "Zabbix %d", priority);
-        ServerStatuses[i] = (SystemStatus::ServerStatus)priority;
-      }
-      for ( int j = i; i < item1.size() && i < STATUS_COUNT; i++ )
-      {
-        ServerStatuses[i] = SystemStatus::ServerStatus::Unknown;
-      }
+      logMsg( "Got output parsed OK" );
     }
     else
     {
