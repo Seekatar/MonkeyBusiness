@@ -48,7 +48,7 @@ bool SystemStatus::initialize()
   while (WiFi.status() != WL_CONNECTED)
   {
     _locationIndex ^= 1;
-    logMsg("Try %d connecting to SSID: %s %s", attempt++, Locations[_locationIndex].SSID,Locations[_locationIndex].Password);
+    logMsg("Try %d connecting to SSID: %s", attempt++, Locations[_locationIndex].SSID);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     WiFi.begin(Locations[_locationIndex].SSID, Locations[_locationIndex].Password);
 

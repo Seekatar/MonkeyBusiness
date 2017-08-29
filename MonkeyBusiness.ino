@@ -94,6 +94,7 @@ void loop() {
 
   if ( action == MonkeyProcessor::Action::Clap )
   {
+    logMsg( "Action is %d", (int)action);
     forward( 4000 );
   }
 }

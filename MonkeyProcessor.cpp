@@ -16,13 +16,24 @@ bool MonkeyProcessor::checkStatus(SystemStatus::BuildStatus status)
     if (_systemStatus.BuildInfo[i].Status == status)
     {
       int j = 0;
+      bool found = false;
       for (; j < SystemStatus::STATUS_COUNT; j++)
       {
         if (strcmp(PrevBuildInfo[j].Id, _systemStatus.BuildInfo[i].Id) == 0 )
-          return PrevBuildInfo[j].Status != status;
+        {
+          if ( PrevBuildInfo[j].Status != status )
+          {
+            logMsg( ">>>>>>>> DOIT %s %d != %s %d", PrevBuildInfo[j].Id, (int)PrevBuildInfo[j].Status, _systemStatus.BuildInfo[i].Id, (int)status );
+            return true;
+          }
+          found = true;
+        }
       }
-      if (j == SystemStatus::STATUS_COUNT)
+      if (!found)
+      {
+        logMsg( ">>>>>>>> DOIT since not found" );
         return true;
+      }
     }
   }
   return false;
